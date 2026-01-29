@@ -74,7 +74,8 @@ export default function ReviewsPage() {
     const fetchReviews = async () => {
         try {
             const res = await fetch("/api/reviews")
-            setReviews(await res.json() || [])
+            const data = await res.json()
+            setReviews(Array.isArray(data) ? data : [])
         } catch (e) { console.error(e) } finally { setLoading(false) }
     }
 
@@ -123,9 +124,9 @@ export default function ReviewsPage() {
             </div>
 
             <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-                <SortableContext items={reviews.map(r => r.id)} strategy={verticalListSortingStrategy}>
+                <SortableContext items={(Array.isArray(reviews) ? reviews : []).map(r => r.id)} strategy={verticalListSortingStrategy}>
                     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
-                        {reviews.map((review) => <SortableReview key={review.id} review={review} onEdit={() => handleEdit(review)} onDelete={() => handleDelete(review)} />)}
+                        {(Array.isArray(reviews) ? reviews : []).map((review) => <SortableReview key={review.id} review={review} onEdit={() => handleEdit(review)} onDelete={() => handleDelete(review)} />)}
                     </div>
                 </SortableContext>
             </DndContext>

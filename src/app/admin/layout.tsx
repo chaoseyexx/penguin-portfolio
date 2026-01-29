@@ -40,7 +40,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             )}>
                 <div className="flex flex-col h-full">
                     <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-800">
-                        <span className="text-white font-bold text-sm">Admin Panel</span>
+                        <span className="text-white font-bold text-sm select-none">
+                            Pinguin <span className="text-rose-500">Admin</span>
+                        </span>
                         <button onClick={() => setSidebarOpen(false)} className="lg:hidden text-neutral-400 hover:text-white">
                             <X className="h-4 w-4" />
                         </button>

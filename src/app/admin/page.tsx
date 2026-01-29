@@ -54,15 +54,9 @@ export default function AdminLoginPage() {
             <Card className="w-full max-w-md bg-neutral-900/80 backdrop-blur-xl border-neutral-800/50 shadow-2xl relative z-10">
                 <CardHeader className="text-center pb-2">
                     <div className="flex justify-center mb-4">
-                        <div className="relative h-12 w-auto">
-                            <Image
-                                src="/builder-logo.png"
-                                alt="BuilderMan Logo"
-                                width={160}
-                                height={48}
-                                className="object-contain"
-                            />
-                        </div>
+                        <span className="text-4xl font-bold font-heading text-white tracking-tight">
+                            Pinguin<span className="text-primary">.</span>
+                        </span>
                     </div>
                     <h1 className="text-2xl font-bold text-white font-heading">Admin Panel</h1>
                     <p className="text-neutral-400 text-sm">Enter your password to access the dashboard</p>

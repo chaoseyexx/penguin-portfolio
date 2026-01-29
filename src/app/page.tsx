@@ -38,15 +38,11 @@ import { SoundCloudPlayer } from "@/components/soundcloud-player"
 import { ImageModal } from "@/components/image-modal"
 import { TermsModal } from "@/components/terms-modal"
 
-// Import Pingu Data
-import { portfolioItems } from "@/data/portfolio"
-import { reviews } from "@/data/reviews"
-import { initialSkills } from "@/data/skills"
-
 // Types
-import { PortfolioItem } from "@/data/portfolio"
-import { Review } from "@/data/reviews"
-import { Skill } from "@/data/skills"
+import { PortfolioItem, PortfolioData as IPortfolioData } from "@/lib/db"
+import { Review } from "@/lib/db"
+import { Skill } from "@/lib/db"
+import { Settings } from "@/lib/db"
 
 interface PortfolioData {
     environments: PortfolioItem[]
@@ -63,7 +59,8 @@ const ITEMS_PER_PAGE = 6
 
 // Icon mapping
 const iconMap: Record<string, any> = {
-    Code, Zap, Star, ExternalLink, Cuboid, Palette, Box, Layout, Smartphone, Lock
+    Code, Zap, Star, ExternalLink, Cuboid, Palette, Box, Layout, Smartphone, Lock,
+    code: Code, zap: Zap, star: Star, externallink: ExternalLink, cuboid: Cuboid, palette: Palette, box: Box, layout: Layout, smartphone: Smartphone, lock: Lock
 }
 
 export default function Home() {
@@ -72,33 +69,40 @@ export default function Home() {
     const [activeSection, setActiveSection] = useState("home")
     const sectionsRef = useRef<{ [key: string]: HTMLElement | null }>({})
 
-    // Organize Data
-    const [portfolio, setPortfolio] = useState<PortfolioData>({
-        environments: [],
-        structures: [],
-        interiors: [],
-        models: []
-    })
+    // Data States
+    const [portfolio, setPortfolio] = useState<PortfolioData>({ environments: [], structures: [], interiors: [], models: [] })
+    const [skills, setSkills] = useState<Skill[]>([])
+    const [reviews, setReviews] = useState<Review[]>([])
+    const [settings, setSettings] = useState<Settings | null>(null)
+    const [loading, setLoading] = useState(true)
 
-    // Categorize items on load
+    // Fetch Data
     useEffect(() => {
-        const organized: PortfolioData = {
-            environments: [],
-            structures: [],
-            interiors: [],
-            models: []
+        const fetchData = async () => {
+            try {
+                const [portfolioRes, skillsRes, reviewsRes, settingsRes] = await Promise.all([
+                    fetch('/api/portfolio?cachebust=1'),
+                    fetch('/api/skills?cachebust=1'),
+                    fetch('/api/reviews?cachebust=1'),
+                    fetch('/api/settings?cachebust=1')
+                ])
+
+                const portfolioData = await portfolioRes.json()
+                const skillsData = await skillsRes.json()
+                const reviewsData = await reviewsRes.json()
+                const settingsData = await settingsRes.json()
+
+                setPortfolio(portfolioData)
+                setSkills(skillsData)
+                setReviews(reviewsData)
+                setSettings(settingsData)
+            } catch (error) {
+                console.error("Failed to fetch data:", error)
+            } finally {
+                setLoading(false)
+            }
         }
-
-        portfolioItems.forEach(item => {
-            const cat = item.category.toLowerCase()
-            if (cat.includes('environment') || cat.includes('map')) organized.environments.push(item)
-            else if (cat.includes('structure')) organized.structures.push(item)
-            else if (cat.includes('interior')) organized.interiors.push(item)
-            else if (cat.includes('model')) organized.models.push(item)
-            else organized.environments.push(item) // Fallback
-        })
-
-        setPortfolio(organized)
+        fetchData()
     }, [])
 
     // Modal states
@@ -122,17 +126,18 @@ export default function Home() {
 
     // Calculate total pages
     const totalPages = {
-        environments: Math.ceil(portfolio.environments.length / ITEMS_PER_PAGE),
-        structures: Math.ceil(portfolio.structures.length / ITEMS_PER_PAGE),
-        interiors: Math.ceil(portfolio.interiors.length / ITEMS_PER_PAGE),
-        models: Math.ceil(portfolio.models.length / ITEMS_PER_PAGE),
+        environments: Math.ceil((portfolio.environments?.length || 0) / ITEMS_PER_PAGE),
+        structures: Math.ceil((portfolio.structures?.length || 0) / ITEMS_PER_PAGE),
+        interiors: Math.ceil((portfolio.interiors?.length || 0) / ITEMS_PER_PAGE),
+        models: Math.ceil((portfolio.models?.length || 0) / ITEMS_PER_PAGE),
     }
 
     // Get paginated items
     const getPaginatedItems = (category: "environments" | "structures" | "interiors" | "models") => {
+        const items = portfolio[category] || []
         const startIndex = (currentPage[category] - 1) * ITEMS_PER_PAGE
         const endIndex = startIndex + ITEMS_PER_PAGE
-        return portfolio[category].slice(startIndex, endIndex)
+        return items.slice(startIndex, endIndex)
     }
 
     // Handle page change
@@ -253,11 +258,15 @@ export default function Home() {
                     <h3 className="font-bold text-xl mb-2 text-white group-hover:text-primary transition-colors font-heading">
                         {build.title}
                     </h3>
-                    <p className="text-neutral-300 line-clamp-2">{build.description}</p>
+                    <p className="text-neutral-300 line-clamp-2">{build.desc}</p>
                 </CardContent>
             </Card>
         </ScrollAnimation>
     )
+
+    if (loading) {
+        return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>
+    }
 
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/30 selection:text-white">
@@ -282,7 +291,7 @@ export default function Home() {
                 <div className="container flex h-20 items-center justify-between">
                     <div className="flex items-center gap-3">
                         <Link href="/" className="text-2xl font-bold font-heading text-white">
-                            Pingu<span className="text-primary">.</span>
+                            {settings?.site?.title.split(' ')[0] || 'Pingu'}<span className="text-primary">.</span>
                         </Link>
                     </div>
 
@@ -314,7 +323,7 @@ export default function Home() {
                                 <div className="flex flex-col h-full">
                                     <div className="flex items-center justify-between mb-8">
                                         <div className="flex items-center gap-3">
-                                            <span className="text-2xl font-bold font-heading text-white">Pingu.</span>
+                                            <span className="text-2xl font-bold font-heading text-white">{settings?.site?.title.split(' ')[0] || 'Pingu'}.</span>
                                         </div>
                                     </div>
                                     <nav className="flex flex-col gap-6">
@@ -365,15 +374,15 @@ export default function Home() {
                                     <div>
                                         <h2 className="text-primary font-bold tracking-widest text-sm md:text-base mb-4 flex items-center">
                                             <span className="inline-block w-8 md:w-12 h-[2px] bg-primary mr-3 md:mr-4"></span>
-                                            ROBLOX DEVELOPER
+                                            {settings?.hero?.subtitle}
                                         </h2>
                                         <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.9] font-heading mb-6">
-                                            Building <span className="text-gradient">Immersive</span> Worlds
+                                            {settings?.hero?.title}
                                         </h1>
                                     </div>
 
                                     <p className="text-lg md:text-2xl text-neutral-400 max-w-xl font-light leading-relaxed">
-                                        Specializing in high-fidelity environments, detailed structures, and immersive experiences on Roblox.
+                                        {settings?.hero?.description}
                                     </p>
 
                                     <div className="flex flex-wrap gap-4 pt-4">
@@ -395,10 +404,13 @@ export default function Home() {
                                 <div className="relative animate-float">
                                     <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-primary/20 to-transparent rounded-3xl blur-3xl transform scale-95 translate-y-8"></div>
                                     <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-sm shadow-2xl shadow-black/50">
-                                        {/* Placeholder Hero Image - Should link to a robust hero image */}
-                                        <div className="absolute inset-0 flex items-center justify-center text-neutral-800">
-                                            <Cuboid size={80} strokeWidth={1} />
-                                        </div>
+                                        <Image
+                                            src="/hero-piano.png"
+                                            alt="Grand Piano Build"
+                                            fill
+                                            className="object-cover"
+                                            priority
+                                        />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
                                         {/* Decorative UI elements */}
@@ -410,7 +422,7 @@ export default function Home() {
                                                         <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                                         <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
                                                     </span>
-                                                    <p className="text-sm font-bold text-white">Available for Commissions</p>
+                                                    <p className="text-sm font-bold text-white">{settings?.contact?.availability}</p>
                                                 </div>
                                             </div>
                                             <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
@@ -526,8 +538,8 @@ export default function Home() {
                         </ScrollAnimation>
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 sm:px-6 md:px-0">
-                            {initialSkills.map((skillSet, index) => {
-                                const IconComponent = iconMap[skillSet.iconName] || Zap
+                            {skills.map((skillSet, index) => {
+                                const IconComponent = iconMap[skillSet.icon.toLowerCase()] || Zap
                                 return (
                                     <ScrollAnimation
                                         key={index}
@@ -542,9 +554,9 @@ export default function Home() {
                                                 </div>
                                                 <div>
                                                     <h3 className="text-2xl font-bold mb-3 text-white font-heading">
-                                                        {skillSet.name}
+                                                        {skillSet.title}
                                                     </h3>
-                                                    <p className="text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors">{skillSet.description}</p>
+                                                    <p className="text-neutral-400 leading-relaxed group-hover:text-neutral-300 transition-colors">{skillSet.desc}</p>
                                                 </div>
                                             </CardContent>
                                         </Card>
@@ -570,16 +582,20 @@ export default function Home() {
                             >
                                 <div className="absolute -inset-4 -z-10 bg-gradient-to-tr from-primary/10 to-transparent rounded-3xl blur-3xl transform scale-95 translate-y-4"></div>
                                 <div className="relative aspect-square overflow-hidden rounded-3xl border border-neutral-800 shadow-2xl shadow-black/50 bg-neutral-900">
-                                    <div className="absolute inset-0 flex items-center justify-center text-neutral-800">
-                                        <Smartphone size={120} strokeWidth={1} />
-                                    </div>
+                                    <Image
+                                        src={settings?.about?.profileImage || "/pingu-profile.png"}
+                                        alt="Pingu Profile"
+                                        fill
+                                        className="object-cover"
+                                        priority
+                                    />
                                     <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                                     <div className="absolute bottom-0 left-0 p-8 md:p-10 w-full">
                                         <div className="inline-flex px-4 py-1.5 rounded-full bg-primary/20 backdrop-blur-md border border-primary/20 text-xs font-bold text-white mb-4 tracking-wider">
                                             EST. 2020
                                         </div>
-                                        <h3 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2">Pingu</h3>
-                                        <p className="text-neutral-300">Professional Roblox Developer</p>
+                                        <h3 className="text-3xl md:text-4xl font-bold text-white font-heading mb-2">{settings?.about?.name}</h3>
+                                        <p className="text-neutral-300">{settings?.about?.experience} Experience</p>
                                     </div>
                                 </div>
                             </ScrollAnimation>
@@ -601,25 +617,17 @@ export default function Home() {
                                 </div>
                                 <div className="space-y-6 text-lg text-neutral-400 font-light leading-relaxed">
                                     <p>
-                                        Hi, I'm <strong className="text-white font-semibold">Pingu</strong>, a passionate Roblox developer with over 3 years of experience.
-                                        I am dedicated to creating amazing, innovative, and engaging experiences for everyone.
+                                        Hi, I'm <strong className="text-white font-semibold">{settings?.about?.name}</strong>, a passionate Roblox developer.
                                     </p>
-                                    <p>
-                                        I'm always pushing the boundaries of what was thought to be possible in Roblox.
-                                        I optimize for performance while maintaining visual fidelity, ensuring every build runs as smoothly as it looks.
-                                    </p>
+                                    {settings?.about?.bio?.map((paragraph, i) => (
+                                        <p key={i}>{paragraph}</p>
+                                    ))}
                                 </div>
 
                                 <div className="pt-6">
                                     <h4 className="text-lg font-bold text-white font-heading mb-6 uppercase tracking-wider">Why Work With Me?</h4>
                                     <ul className="grid grid-cols-1 gap-4">
-                                        {[
-                                            "Always instantaneous to respond",
-                                            "Will complete your projects before the given deadline",
-                                            "Flexible with payment options",
-                                            "Good communicator and team worker",
-                                            "Available 2-8 hours daily"
-                                        ].map((item, index) => (
+                                        {settings?.about?.whyHireMe?.map((item, index) => (
                                             <ScrollAnimation
                                                 key={index}
                                                 animation="fade-in-left"
@@ -689,7 +697,7 @@ export default function Home() {
                                                 </div>
                                                 <div>
                                                     <p className="text-sm text-neutral-500 uppercase tracking-wider font-semibold mb-1">Email</p>
-                                                    <p className="font-bold text-white text-lg">Unavailable</p>
+                                                    <p className="font-bold text-white text-lg">{settings?.contact?.email || 'Unavailable'}</p>
                                                 </div>
                                             </div>
 
@@ -702,7 +710,7 @@ export default function Home() {
                                                 </div>
                                                 <div>
                                                     <p className="text-sm text-neutral-500 uppercase tracking-wider font-semibold mb-1">Discord</p>
-                                                    <p className="font-bold text-white text-lg">penguin57746</p>
+                                                    <p className="font-bold text-white text-lg">{settings?.contact?.discordUsername || 'Unavailable'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -713,7 +721,7 @@ export default function Home() {
                                                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
                                                     <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
                                                 </div>
-                                                <p className="text-neutral-300 font-medium">Currently available for new projects</p>
+                                                <p className="text-neutral-300 font-medium">Currently {settings?.contact?.availability || 'Available'}</p>
                                             </div>
                                         </div>
                                     </CardContent>
@@ -740,7 +748,7 @@ export default function Home() {
                                                 size="lg"
                                                 className="w-full h-16 text-lg font-bold uppercase tracking-wide flex items-center justify-center gap-3"
                                                 onClick={() => {
-                                                    window.open("https://discord.gg/nAFq5RzajF", "_blank")
+                                                    window.open(settings?.contact?.discordLink || "https://discord.gg/nAFq5RzajF", "_blank")
                                                 }}
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36" className="h-6 w-6 fill-current">
@@ -760,7 +768,7 @@ export default function Home() {
                     <div className="container px-4 sm:px-6 md:px-0">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">
                             <div className="flex items-center gap-3">
-                                <span className="text-lg font-bold font-heading text-white">Pingu.</span>
+                                <span className="text-lg font-bold font-heading text-white">{settings?.site?.title.split(' ')[0] || 'Pingu'}.</span>
                                 <button
                                     onClick={() => setTermsModalOpen(true)}
                                     className="text-xs md:text-sm text-neutral-300 hover:text-white transition-colors"
@@ -770,7 +778,7 @@ export default function Home() {
                             </div>
 
                             <p className="text-center text-xs md:text-sm text-neutral-300 md:text-left">
-                                © {new Date().getFullYear()} Pingu. All rights reserved.
+                                © {new Date().getFullYear()} {settings?.site?.title || 'Pingu'}. All rights reserved.
                             </p>
                         </div>
                     </div>
