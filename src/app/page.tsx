@@ -413,7 +413,7 @@ export default function Home() {
                                     <div className="absolute inset-0 -z-10 bg-gradient-to-tr from-primary/20 to-transparent rounded-3xl blur-3xl transform scale-95 translate-y-8"></div>
                                     <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-neutral-800 bg-neutral-900/50 backdrop-blur-sm shadow-2xl shadow-black/50">
                                         <Image
-                                            src="/hero-piano.png"
+                                            src="/hero-piano-new.jpg"
                                             alt="Grand Piano Build"
                                             fill
                                             className="object-cover"
