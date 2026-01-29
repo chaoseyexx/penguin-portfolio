@@ -372,12 +372,20 @@ export default function Home() {
                             <ScrollAnimation animation="fade-in-left" duration="duration-1000">
                                 <div className="space-y-6 md:space-y-8">
                                     <div>
-                                        <h2 className="text-primary font-bold tracking-widest text-sm md:text-base mb-4 flex items-center">
+                                        <h2 className="text-primary font-bold tracking-widest text-xl md:text-2xl mb-4 flex items-center">
                                             <span className="inline-block w-8 md:w-12 h-[2px] bg-primary mr-3 md:mr-4"></span>
                                             {settings?.hero?.subtitle}
                                         </h2>
                                         <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.9] font-heading mb-6">
-                                            {settings?.hero?.title}
+                                            {settings?.hero?.title === "Building Immersive Worlds" ? (
+                                                <>
+                                                    Building <br />
+                                                    <span className="text-gradient">Immersive</span> <br />
+                                                    Worlds
+                                                </>
+                                            ) : (
+                                                settings?.hero?.title
+                                            )}
                                         </h1>
                                     </div>
 
