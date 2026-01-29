@@ -21,8 +21,25 @@ const DEFAULT_PORTFOLIO: PortfolioData = { environments: [], structures: [], int
 const DEFAULT_SETTINGS: Settings = {
     site: { title: "Pingu Portfolio", description: "Roblox Developer Portfolio" },
     hero: { subtitle: "ROBLOX DEVELOPER", title: "Building Digital Worlds", description: "I create immersive experiences on Roblox.", featuredImage: "", featuredTitle: "Featured Project", featuredDescription: "Check this out" },
-    about: { name: "Pingu", age: "20", experience: "5+ Years", profileImage: "", bio: ["", ""], whyHireMe: ["Quick Turnaround", "High Quality"] },
-    contact: { email: "contact@example.com", robloxUsername: "Pingu", discordUsername: "pingu", discordLink: "", availability: "Available" },
+    about: {
+        name: "Pingu",
+        age: "20",
+        experience: "3+ Years",
+        profileImage: "/pingu-profile.png",
+        bio: [
+            "Hi, I'm Pingu, a professional Roblox Builder and Developer with 3+ years of building experience designing a wide variety of high-quality builds for experiences of all types. I specialize in all Roblox styles while focusing on creating amazing experiences by bringing ideas to life.",
+            "I am able to create high quality builds while also keeping the optimization throughout the builds.",
+            "I know what players want and what players like so I can create an attracting experience for all players."
+        ],
+        whyHireMe: ["Quick Turnaround", "High Quality", "Optimized Builds", "Player Focused"]
+    },
+    contact: {
+        email: "contact@example.com",
+        robloxUsername: "MadCityGamer57746",
+        discordUsername: "penguin57746",
+        discordLink: "https://discord.com/invite/nAFq5RzajF",
+        availability: "Available"
+    },
     collaborations: []
 }
 
