@@ -63,6 +63,96 @@ const iconMap: Record<string, any> = {
     code: Code, zap: Zap, star: Star, externallink: ExternalLink, cuboid: Cuboid, palette: Palette, box: Box, layout: Layout, smartphone: Smartphone, lock: Lock
 }
 
+// Pagination component
+const Pagination = ({
+    category,
+    totalPages,
+    currentPage,
+    onPageChange
+}: {
+    category: "environments" | "structures" | "interiors" | "models";
+    totalPages: number;
+    currentPage: number;
+    onPageChange: (category: "environments" | "structures" | "interiors" | "models", page: number) => void;
+}) => {
+    if (totalPages <= 1) return null
+    return (
+        <div className="flex justify-center items-center gap-2 mt-8">
+            <Button
+                variant="outline"
+                size="icon"
+                onClick={() => onPageChange(category, Math.max(1, currentPage - 1))}
+                disabled={currentPage === 1}
+                className="h-8 w-8"
+            >
+                <ChevronLeft className="h-4 w-4" />
+            </Button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                    key={page}
+                    variant={currentPage === page ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => onPageChange(category, page)}
+                    className="h-8 w-8 p-0"
+                >
+                    {page}
+                </Button>
+            ))}
+            <Button
+                variant="outline"
+                size="icon"
+                onClick={() => onPageChange(category, Math.min(totalPages, currentPage + 1))}
+                disabled={currentPage === totalPages}
+                className="h-8 w-8"
+            >
+                <ChevronRight className="h-4 w-4" />
+            </Button>
+        </div>
+    )
+}
+
+// Portfolio item component
+const PortfolioItemCard = ({
+    build,
+    index,
+    delay,
+    onOpenModal
+}: {
+    build: PortfolioItem;
+    index: number;
+    delay: any;
+    onOpenModal: (src: string, alt: string) => void;
+}) => (
+    <ScrollAnimation key={index} animation="scale-in" duration="duration-700" delay={delay}>
+        <Card className="group overflow-hidden h-full bg-card-gradient border-neutral-800/50 hover:border-primary/30 transition-all duration-300">
+            <div
+                className="relative h-56 overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
+                onClick={() => onOpenModal(build.image || DEFAULT_IMAGE, build.title)}
+            >
+                <Image
+                    src={build.image || DEFAULT_IMAGE}
+                    alt={build.title}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                {/* Zoom indicator */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="bg-primary/80 rounded-full p-3 transform transition-transform duration-300 hover:scale-110">
+                        <ZoomIn className="h-6 w-6 text-white" />
+                    </div>
+                </div>
+            </div>
+            <CardContent className="p-6">
+                <h3 className="font-bold text-xl mb-2 text-white group-hover:text-primary transition-colors font-heading">
+                    {build.title}
+                </h3>
+                <p className="text-neutral-300 line-clamp-2">{build.desc}</p>
+            </CardContent>
+        </Card>
+    </ScrollAnimation>
+)
+
 export default function Home() {
     const [scrolled, setScrolled] = useState(false)
     const lenis = useLenis()
@@ -191,78 +281,7 @@ export default function Home() {
         }
     }
 
-    // Pagination component
-    const Pagination = ({
-        category,
-        totalPages,
-    }: { category: "environments" | "structures" | "interiors" | "models"; totalPages: number }) => {
-        if (totalPages <= 1) return null
-        return (
-            <div className="flex justify-center items-center gap-2 mt-8">
-                <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handlePageChange(category, Math.max(1, currentPage[category] - 1))}
-                    disabled={currentPage[category] === 1}
-                    className="h-8 w-8"
-                >
-                    <ChevronLeft className="h-4 w-4" />
-                </Button>
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-                    <Button
-                        key={page}
-                        variant={currentPage[category] === page ? "default" : "outline"}
-                        size="sm"
-                        onClick={() => handlePageChange(category, page)}
-                        className="h-8 w-8 p-0"
-                    >
-                        {page}
-                    </Button>
-                ))}
-                <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handlePageChange(category, Math.min(totalPages, currentPage[category] + 1))}
-                    disabled={currentPage[category] === totalPages}
-                    className="h-8 w-8"
-                >
-                    <ChevronRight className="h-4 w-4" />
-                </Button>
-            </div>
-        )
-    }
 
-    // Portfolio item component
-    const PortfolioItemCard = ({ build, index, delay }: { build: PortfolioItem; index: number; delay: any }) => (
-        <ScrollAnimation key={index} animation="scale-in" duration="duration-700" delay={delay}>
-            <Card className="group overflow-hidden h-full bg-card-gradient border-neutral-800/50 hover:border-primary/30 transition-all duration-300">
-                <div
-                    className="relative h-56 overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-                    onClick={() => openImageModal(build.image || DEFAULT_IMAGE, build.title)}
-                >
-                    <Image
-                        src={build.image || DEFAULT_IMAGE}
-                        alt={build.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    {/* Zoom indicator */}
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="bg-primary/80 rounded-full p-3 transform transition-transform duration-300 hover:scale-110">
-                            <ZoomIn className="h-6 w-6 text-white" />
-                        </div>
-                    </div>
-                </div>
-                <CardContent className="p-6">
-                    <h3 className="font-bold text-xl mb-2 text-white group-hover:text-primary transition-colors font-heading">
-                        {build.title}
-                    </h3>
-                    <p className="text-neutral-300 line-clamp-2">{build.desc}</p>
-                </CardContent>
-            </Card>
-        </ScrollAnimation>
-    )
 
     if (loading) {
         return <div className="min-h-screen flex items-center justify-center text-white">Loading...</div>
@@ -494,10 +513,16 @@ export default function Home() {
                                                 build={build}
                                                 index={index}
                                                 delay={`delay-${Math.min(index * 100, 500)}` as any}
+                                                onOpenModal={openImageModal}
                                             />
                                         ))}
                                     </div>
-                                    <Pagination category={category as any} totalPages={(totalPages as any)[category]} />
+                                    <Pagination
+                                        category={category as any}
+                                        totalPages={(totalPages as any)[category]}
+                                        currentPage={(currentPage as any)[category]}
+                                        onPageChange={handlePageChange}
+                                    />
                                 </TabsContent>
                             ))}
                         </Tabs>
@@ -603,14 +628,23 @@ export default function Home() {
                                             <Quote className="h-8 w-8 text-neutral-700 mb-4 opacity-50" />
                                             <p className="text-neutral-300 italic leading-relaxed text-lg">"{review.content}"</p>
                                         </div>
-                                        <div className="flex items-center gap-4 mt-auto pt-6 border-t border-neutral-800/50">
-                                            <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${review.avatarColor || "from-neutral-700 to-neutral-600"} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
-                                                {review.name.charAt(0)}
+                                        <div className="flex items-center justify-between mt-auto pt-6 border-t border-neutral-800/50">
+                                            <div className="flex items-center gap-4">
+                                                <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${review.avatarColor || "from-neutral-700 to-neutral-600"} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                                                    {review.name.charAt(0)}
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-white leading-tight">{review.name}</h4>
+                                                    <p className="text-xs text-primary font-medium tracking-wide uppercase">{review.role}</p>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <h4 className="font-bold text-white leading-tight">{review.name}</h4>
-                                                <p className="text-xs text-primary font-medium tracking-wide uppercase">{review.role}</p>
-                                            </div>
+
+                                            {(review.project || review.price) && (
+                                                <div className="text-right flex flex-col gap-0.5">
+                                                    {review.project && <p className="text-xs text-neutral-400">Project: <span className="text-neutral-200">{review.project}</span></p>}
+                                                    {review.price && <p className="text-xs text-neutral-400">Amount: <span className="text-neutral-200">{review.price}</span></p>}
+                                                </div>
+                                            )}
                                         </div>
                                     </Card>
                                 </ScrollAnimation>
