@@ -20,7 +20,7 @@ export interface Settings {
 const DEFAULT_PORTFOLIO: PortfolioData = { environments: [], structures: [], interiors: [], models: [] }
 const DEFAULT_SETTINGS: Settings = {
     site: { title: "Pingu Portfolio", description: "Roblox Developer Portfolio" },
-    hero: { subtitle: "ROBLOX DEVELOPER", title: "Building Digital Worlds", description: "I create immersive experiences on Roblox.", featuredImage: "", featuredTitle: "Featured Project", featuredDescription: "Check this out" },
+    hero: { subtitle: "ROBLOX DEVELOPER", title: "Building Immersive Worlds", description: "Specializing in high-fidelity environments, detailed structures, and immersive experiences on Roblox.", featuredImage: "", featuredTitle: "Featured Project", featuredDescription: "Check this out" },
     about: {
         name: "Pingu",
         age: "20",

@@ -413,22 +413,7 @@ export default function Home() {
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
-                                        {/* Decorative UI elements */}
-                                        <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl bg-neutral-900/80 border border-neutral-800 backdrop-blur-md flex items-center justify-between">
-                                            <div>
-                                                <p className="text-xs text-neutral-400 uppercase tracking-wider mb-1">Current Status</p>
-                                                <div className="flex items-center gap-2">
-                                                    <span className="relative flex h-3 w-3">
-                                                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-                                                        <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
-                                                    </span>
-                                                    <p className="text-sm font-bold text-white">{settings?.contact?.availability}</p>
-                                                </div>
-                                            </div>
-                                            <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                                                <Zap className="h-5 w-5" />
-                                            </div>
-                                        </div>
+
                                     </div>
                                 </div>
                             </ScrollAnimation>
@@ -563,6 +548,65 @@ export default function Home() {
                                     </ScrollAnimation>
                                 )
                             })}
+                        </div>
+                    </div>
+                </section>
+
+                {/* Reviews Section */}
+                <section
+                    id="reviews"
+                    ref={(el) => registerSection("reviews", el)}
+                    className="py-24 md:py-32 relative px-4 sm:px-0"
+                >
+                    <div className="absolute inset-0 z-0">
+                        <div className="absolute bottom-1/3 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-[100px]"></div>
+                        <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
+                    </div>
+
+                    <div className="container relative z-10 space-y-16 md:space-y-20">
+                        <ScrollAnimation animation="fade-in-up" duration="duration-700">
+                            <div className="max-w-3xl mx-auto text-center space-y-6">
+                                <h2 className="text-primary font-mono text-sm tracking-widest uppercase flex items-center justify-center">
+                                    <span className="inline-block w-8 h-[1px] bg-primary mr-4"></span>
+                                    TESTIMONIALS
+                                    <span className="inline-block w-8 h-[1px] bg-primary ml-4"></span>
+                                </h2>
+                                <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
+                                    Client Reviews
+                                </h3>
+                            </div>
+                        </ScrollAnimation>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {reviews.map((review, index) => (
+                                <ScrollAnimation
+                                    key={index}
+                                    animation="fade-in-up"
+                                    duration="duration-700"
+                                    delay={`delay-${Math.min(index * 100, 500)}` as any}
+                                >
+                                    <Card className="h-full bg-neutral-900/30 border-neutral-800 backdrop-blur-sm p-8 hover:border-primary/30 transition-all duration-300 flex flex-col">
+                                        <div className="flex items-center gap-1 mb-6 text-primary">
+                                            {Array.from({ length: 5 }).map((_, i) => (
+                                                <Star key={i} className={`h-4 w-4 ${i < review.rating ? "fill-current" : "text-neutral-700"}`} />
+                                            ))}
+                                        </div>
+                                        <div className="mb-6 flex-1">
+                                            <Quote className="h-8 w-8 text-neutral-700 mb-4 opacity-50" />
+                                            <p className="text-neutral-300 italic leading-relaxed text-lg">"{review.content}"</p>
+                                        </div>
+                                        <div className="flex items-center gap-4 mt-auto pt-6 border-t border-neutral-800/50">
+                                            <div className={`h-12 w-12 rounded-full bg-gradient-to-br ${review.avatarColor || "from-neutral-700 to-neutral-600"} flex items-center justify-center text-white font-bold text-lg shadow-lg`}>
+                                                {review.name.charAt(0)}
+                                            </div>
+                                            <div>
+                                                <h4 className="font-bold text-white leading-tight">{review.name}</h4>
+                                                <p className="text-xs text-primary font-medium tracking-wide uppercase">{review.role}</p>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                </ScrollAnimation>
+                            ))}
                         </div>
                     </div>
                 </section>

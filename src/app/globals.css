@@ -455,13 +455,19 @@ p {
 
   button,
   .button,
-  a {
-    @apply min-h-[44px];
+  [role="button"],
+  a.nav-link {
+    @apply min-h-[44px] flex items-center;
   }
 
   input,
   select,
   textarea {
     @apply min-h-[44px];
+  }
+
+  /* Safe area for iPhone X+ */
+  .container {
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
