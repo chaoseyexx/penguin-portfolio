@@ -34,7 +34,7 @@ const DEFAULT_SETTINGS: Settings = {
         whyHireMe: ["Quick Turnaround", "High Quality", "Optimized Builds", "Player Focused"]
     },
     contact: {
-        email: "contact@example.com",
+        email: "danteolmeo@gmail.com",
         robloxUsername: "MadCityGamer57746",
         discordUsername: "penguin57746",
         discordLink: "https://discord.com/invite/nAFq5RzajF",

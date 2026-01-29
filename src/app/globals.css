@@ -309,10 +309,7 @@ h6 {
 }
 
 @layer utilities {
-  .container {
-    @apply px-4 sm:px-6 lg:px-8 mx-auto;
-    max-width: 1280px;
-  }
+
 
   .text-balance {
     text-wrap: balance;
@@ -439,10 +436,7 @@ p {
 
 /* Improve mobile experience */
 @media (max-width: 640px) {
-  .container {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
+
 
   button,
   .button {

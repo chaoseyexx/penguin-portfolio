@@ -356,7 +356,7 @@ export default function Home() {
                 <section
                     id="home"
                     ref={(el) => registerSection("home", el)}
-                    className="relative min-h-[95vh] flex items-center overflow-hidden px-4 sm:px-0"
+                    className="relative min-h-[95vh] flex items-center overflow-hidden"
                 >
                     {/* Background elements */}
                     <div className="absolute inset-0 z-0">
@@ -367,7 +367,7 @@ export default function Home() {
                         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
                     </div>
 
-                    <div className="container relative z-10 py-24 md:py-32">
+                    <div className="container relative z-10 py-16 md:py-32">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-20 items-center">
                             <ScrollAnimation animation="fade-in-left" duration="duration-1000">
                                 <div className="space-y-6 md:space-y-8">
@@ -376,7 +376,7 @@ export default function Home() {
                                             <span className="inline-block w-8 md:w-12 h-[2px] bg-primary mr-3 md:mr-4"></span>
                                             {settings?.hero?.subtitle}
                                         </h2>
-                                        <h1 className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter leading-[0.9] font-heading mb-6">
+                                        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] md:leading-[0.9] font-heading mb-6">
                                             {settings?.hero?.title === "Building Immersive Worlds" ? (
                                                 <>
                                                     Building <br />
@@ -433,7 +433,7 @@ export default function Home() {
                 <section
                     id="portfolio"
                     ref={(el) => registerSection("portfolio", el)}
-                    className="py-24 md:py-32 relative px-4 sm:px-0"
+                    className="py-16 md:py-32 relative"
                 >
                     <div className="absolute inset-0 z-0">
                         <div className="absolute top-1/4 left-[10%] w-96 h-96 rounded-full bg-primary/5 blur-[120px]"></div>
@@ -449,7 +449,7 @@ export default function Home() {
                                     MY PORTFOLIO
                                     <span className="inline-block w-8 h-[1px] bg-primary ml-4"></span>
                                 </h2>
-                                <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
+                                <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
                                     Selected Works
                                 </h3>
                             </div>
@@ -508,7 +508,7 @@ export default function Home() {
                 <section
                     id="skills"
                     ref={(el) => registerSection("skills", el)}
-                    className="py-24 md:py-32 relative bg-neutral-950/50 px-4 sm:px-0"
+                    className="py-16 md:py-32 relative bg-neutral-950/50"
                 >
                     <div className="absolute inset-0 z-0">
                         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
@@ -518,7 +518,7 @@ export default function Home() {
 
                     <div className="container relative z-10 space-y-16 md:space-y-20">
                         <ScrollAnimation animation="fade-in-up" duration="duration-700">
-                            <div className="max-w-3xl mx-auto text-center space-y-6 px-4 sm:px-0">
+                            <div className="max-w-3xl mx-auto text-center space-y-6">
                                 <h2 className="text-primary font-mono text-sm tracking-widest uppercase flex items-center justify-center">
                                     <span className="inline-block w-8 h-[1px] bg-primary mr-4"></span>
                                     EXPERTISE
@@ -530,7 +530,7 @@ export default function Home() {
                             </div>
                         </ScrollAnimation>
 
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4 sm:px-6 md:px-0">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                             {skills.map((skillSet, index) => {
                                 const IconComponent = iconMap[skillSet.icon.toLowerCase()] || Zap
                                 return (
@@ -564,7 +564,7 @@ export default function Home() {
                 <section
                     id="reviews"
                     ref={(el) => registerSection("reviews", el)}
-                    className="py-24 md:py-32 relative px-4 sm:px-0"
+                    className="py-16 md:py-32 relative"
                 >
                     <div className="absolute inset-0 z-0">
                         <div className="absolute bottom-1/3 left-[10%] w-72 h-72 rounded-full bg-primary/5 blur-[100px]"></div>
@@ -620,12 +620,12 @@ export default function Home() {
                 </section>
 
                 {/* About Section */}
-                <section id="about" ref={(el) => registerSection("about", el)} className="py-24 md:py-32 relative px-4 sm:px-0">
+                <section id="about" ref={(el) => registerSection("about", el)} className="py-16 md:py-32 relative">
                     <div className="absolute inset-0 z-0">
                         <div className="absolute bottom-1/4 left-[5%] w-80 h-80 rounded-full bg-primary/5 blur-[100px]"></div>
                     </div>
 
-                    <div className="container relative z-10 px-4 sm:px-6 md:px-0">
+                    <div className="container relative z-10">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-24 items-center">
                             <ScrollAnimation
                                 animation="fade-in-left"
@@ -662,7 +662,7 @@ export default function Home() {
                                         <span className="inline-block w-8 h-[1px] bg-primary mr-4"></span>
                                         ABOUT ME
                                     </h2>
-                                    <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading leading-tight">
+                                    <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading leading-tight">
                                         Passionate Creator. <br />
                                         <span className="text-neutral-500">Dedicated Builder.</span>
                                     </h3>
@@ -703,7 +703,7 @@ export default function Home() {
                 <section
                     id="contact"
                     ref={(el) => registerSection("contact", el)}
-                    className="py-24 md:py-32 relative px-4 sm:px-0"
+                    className="py-16 md:py-32 relative"
                 >
                     <div className="absolute inset-0 z-0">
                         <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-neutral-800 to-transparent"></div>
@@ -711,7 +711,7 @@ export default function Home() {
                         <div className="absolute inset-0 bg-grid-pattern opacity-[0.03]"></div>
                     </div>
 
-                    <div className="container relative z-10 space-y-16 md:space-y-24 px-4 sm:px-6 md:px-0">
+                    <div className="container relative z-10 space-y-12 md:space-y-24">
                         <ScrollAnimation animation="fade-in-up" duration="duration-700">
                             <div className="max-w-3xl mx-auto text-center space-y-6">
                                 <h2 className="text-primary font-mono text-sm tracking-widest uppercase flex items-center justify-center">
@@ -719,7 +719,7 @@ export default function Home() {
                                     GET IN TOUCH
                                     <span className="inline-block w-8 h-[1px] bg-primary ml-4"></span>
                                 </h2>
-                                <h3 className="text-5xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white font-heading">
+                                <h3 className="text-4xl sm:text-6xl md:text-7xl font-bold tracking-tighter text-white font-heading">
                                     Let's Work Together
                                 </h3>
                                 <p className="text-xl text-neutral-400 max-w-xl mx-auto font-light">
