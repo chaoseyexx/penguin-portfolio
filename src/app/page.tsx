@@ -127,10 +127,10 @@ const PortfolioItemCard = ({
         <Card className="group overflow-hidden h-full bg-card-gradient border-neutral-800/50 hover:border-primary/30 transition-all duration-300">
             <div
                 className="relative h-56 overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.02]"
-                onClick={() => onOpenModal(build.image || DEFAULT_IMAGE, build.title)}
+                onClick={() => onOpenModal(build.image?.trim() || DEFAULT_IMAGE, build.title)}
             >
                 <Image
-                    src={build.image || DEFAULT_IMAGE}
+                    src={build.image?.trim() || DEFAULT_IMAGE}
                     alt={build.title}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
