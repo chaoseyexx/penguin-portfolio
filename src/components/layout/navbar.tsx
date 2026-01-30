@@ -51,17 +51,16 @@ export function Navbar() {
         setTimeout(() => {
             const element = document.getElementById(sectionId)
             if (element) {
-                // Use scrollIntoView for better mobile compatibility
-                element.scrollIntoView({ behavior: "smooth", block: "start" })
+                const headerOffset = 100
+                const elementTop = element.getBoundingClientRect().top + window.scrollY
+                const scrollPosition = elementTop - headerOffset
 
-                // Adjust scroll position for header offset after a small delay
-                setTimeout(() => {
-                    const headerOffset = 100
-                    const currentScroll = window.scrollY
-                    window.scrollTo({ top: currentScroll - headerOffset, behavior: "smooth" })
-                }, 100)
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: "smooth"
+                })
             }
-        }, 300)
+        }, 350)
     }
 
     return (
