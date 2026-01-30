@@ -94,7 +94,7 @@ export function Navbar() {
                                 <Menu size={24} />
                             </Button>
                         </SheetTrigger>
-                        <SheetContent side="right" className="bg-black/95 backdrop-blur-2xl border-white/10 p-0 overflow-hidden">
+                        <SheetContent side="right" className="bg-black/95 backdrop-blur-2xl border-white/10 p-0 overflow-hidden z-[100] pointer-events-auto">
                             <div className="flex flex-col h-full pt-20 px-8 pb-10">
                                 <SheetTitle className="sr-only">Menu</SheetTitle>
                                 <SheetDescription className="sr-only">Navigation links</SheetDescription>
@@ -102,8 +102,9 @@ export function Navbar() {
                                     {navLinks.map((link) => (
                                         <button
                                             key={link.id}
+                                            type="button"
                                             onClick={() => scrollToSection(link.id)}
-                                            className={`text-2xl font-bold font-heading text-left transition-all duration-300 ${activeSection === link.id ? "text-primary translate-x-2" : "text-white/50 hover:text-white"
+                                            className={`text-2xl font-bold font-heading text-left transition-all duration-300 cursor-pointer z-10 ${activeSection === link.id ? "text-primary translate-x-2" : "text-white/50 hover:text-white"
                                                 }`}
                                         >
                                             {link.name}
@@ -112,8 +113,9 @@ export function Navbar() {
                                 </nav>
                                 <div className="mt-auto">
                                     <Button
+                                        type="button"
                                         onClick={() => scrollToSection("contact")}
-                                        className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold"
+                                        className="w-full h-14 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold cursor-pointer"
                                     >
                                         Hire Me
                                     </Button>
