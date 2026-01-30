@@ -367,6 +367,15 @@ h6 {
   .nav-link-active {
     @apply text-white after:w-full;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Form elements */
@@ -407,7 +416,7 @@ button {
 /* Responsive typography */
 h1,
 .h1 {
-  @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold;
+  @apply text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold;
   line-height: 1.1;
 }
 

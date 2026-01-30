@@ -37,6 +37,7 @@ import { ScrollAnimation } from "@/components/scroll-animation"
 import { SoundCloudPlayer } from "@/components/soundcloud-player"
 import { ImageModal } from "@/components/image-modal"
 import { TermsModal } from "@/components/terms-modal"
+import { Navbar } from "@/components/layout/navbar"
 
 // Types
 import { PortfolioItem, PortfolioData as IPortfolioData } from "@/lib/db"
@@ -302,73 +303,8 @@ export default function Home() {
             {/* Terms Modal */}
             <TermsModal isOpen={termsModalOpen} onClose={() => setTermsModalOpen(false)} />
 
-            {/* Header */}
-            <header
-                className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled ? "bg-background/80 backdrop-blur-lg border-b border-neutral-800/50" : "bg-transparent"
-                    }`}
-            >
-                <div className="container flex h-20 items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Link href="/" className="text-2xl font-bold font-heading text-white">
-                            {settings?.site?.title.split(' ')[0] || 'Pingu'}<span className="text-primary">.</span>
-                        </Link>
-                    </div>
-
-                    <nav className="hidden md:flex gap-8">
-                        {["home", "portfolio", "skills", "reviews", "about", "contact"].map((section) => (
-                            <Link
-                                key={section}
-                                href={`#${section}`}
-                                onClick={(e) => scrollToSection(section, e)}
-                                className={`nav-link ${activeSection === section ? "nav-link-active" : ""}`}
-                            >
-                                {section.charAt(0).toUpperCase() + section.slice(1)}
-                            </Link>
-                        ))}
-                    </nav>
-
-                    <div className="flex items-center gap-4">
-                        <Button className="hidden sm:flex" onClick={(e) => scrollToSection("contact", e)}>
-                            Hire Me
-                        </Button>
-
-                        <Sheet>
-                            <SheetTrigger asChild className="md:hidden">
-                                <Button variant="outline" size="icon" className="border-neutral-700/50 text-primary bg-transparent">
-                                    <Menu className="h-5 w-5" />
-                                </Button>
-                            </SheetTrigger>
-                            <SheetContent side="right" className="bg-background/95 backdrop-blur-xl border-neutral-800/50">
-                                <div className="flex flex-col h-full">
-                                    <div className="flex items-center justify-between mb-8">
-                                        <div className="flex items-center gap-3">
-                                            <span className="text-2xl font-bold font-heading text-white">{settings?.site?.title.split(' ')[0] || 'Pingu'}.</span>
-                                        </div>
-                                    </div>
-                                    <nav className="flex flex-col gap-6">
-                                        {["home", "portfolio", "skills", "reviews", "about", "contact"].map((section) => (
-                                            <Link
-                                                key={section}
-                                                href={`#${section}`}
-                                                onClick={(e) => scrollToSection(section, e)}
-                                                className={`text-lg font-medium transition-colors ${activeSection === section ? "text-primary" : "text-neutral-300 hover:text-white"
-                                                    }`}
-                                            >
-                                                {section.charAt(0).toUpperCase() + section.slice(1)}
-                                            </Link>
-                                        ))}
-                                    </nav>
-                                    <div className="mt-auto pt-8">
-                                        <Button className="w-full" onClick={(e) => scrollToSection("contact", e)}>
-                                            Hire Me
-                                        </Button>
-                                    </div>
-                                </div>
-                            </SheetContent>
-                        </Sheet>
-                    </div>
-                </div>
-            </header>
+            {/* Navbar */}
+            <Navbar />
 
             <main className="flex-1 pt-20">
                 {/* Hero Section */}
@@ -395,7 +331,7 @@ export default function Home() {
                                             <span className="inline-block w-8 md:w-12 h-[2px] bg-primary mr-3 md:mr-4"></span>
                                             {settings?.hero?.subtitle}
                                         </h2>
-                                        <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] md:leading-[0.9] font-heading mb-6">
+                                        <h1 className="text-3xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tighter leading-[0.95] md:leading-[0.9] font-heading mb-6">
                                             {settings?.hero?.title === "Building Immersive Worlds" ? (
                                                 <>
                                                     Building <br />
@@ -475,8 +411,8 @@ export default function Home() {
                         </ScrollAnimation>
 
                         <Tabs defaultValue="environments" className="w-full">
-                            <div className="flex justify-center mb-12 md:mb-16 overflow-x-auto px-4 py-2">
-                                <TabsList className="bg-neutral-900/80 backdrop-blur-md p-1.5 rounded-full border border-neutral-800 h-auto">
+                            <div className="flex justify-start sm:justify-center mb-12 md:mb-16 overflow-x-auto px-4 py-2 no-scrollbar">
+                                <TabsList className="bg-neutral-900/80 backdrop-blur-md p-1.5 rounded-full border border-neutral-800 h-auto flex-nowrap min-w-max">
                                     <TabsTrigger
                                         value="environments"
                                         className="rounded-full px-6 py-2.5 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 transition-all"
