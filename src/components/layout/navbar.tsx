@@ -44,14 +44,24 @@ export function Navbar() {
     }, [])
 
     const scrollToSection = (sectionId: string) => {
+        // Close the sheet first
         setIsOpen(false)
-        const element = document.getElementById(sectionId)
-        if (element) {
-            const headerOffset = 80
-            const elementPosition = element.getBoundingClientRect().top
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-            window.scrollTo({ top: offsetPosition, behavior: "smooth" })
-        }
+
+        // Use setTimeout to ensure the sheet closes before scrolling
+        setTimeout(() => {
+            const element = document.getElementById(sectionId)
+            if (element) {
+                // Use scrollIntoView for better mobile compatibility
+                element.scrollIntoView({ behavior: "smooth", block: "start" })
+
+                // Adjust scroll position for header offset after a small delay
+                setTimeout(() => {
+                    const headerOffset = 100
+                    const currentScroll = window.scrollY
+                    window.scrollTo({ top: currentScroll - headerOffset, behavior: "smooth" })
+                }, 100)
+            }
+        }, 300)
     }
 
     return (
