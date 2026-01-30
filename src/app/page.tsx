@@ -411,29 +411,29 @@ export default function Home() {
                         </ScrollAnimation>
 
                         <Tabs defaultValue="environments" className="w-full">
-                            <div className="flex justify-start sm:justify-center mb-12 md:mb-16 overflow-x-auto px-4 py-2 no-scrollbar">
-                                <TabsList className="bg-neutral-900/80 backdrop-blur-md p-1.5 rounded-full border border-neutral-800 h-auto flex-nowrap min-w-max">
+                            <div className="flex justify-center mb-8 md:mb-12 px-4">
+                                <TabsList className="bg-transparent p-1 rounded-full h-auto flex-nowrap gap-1">
                                     <TabsTrigger
                                         value="environments"
-                                        className="rounded-full px-6 py-2.5 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 transition-all"
+                                        className="rounded-full px-4 py-2 text-xs sm:text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 hover:text-white transition-all bg-transparent data-[state=inactive]:bg-transparent"
                                     >
                                         Environments
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="structures"
-                                        className="rounded-full px-6 py-2.5 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 transition-all"
+                                        className="rounded-full px-4 py-2 text-xs sm:text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 hover:text-white transition-all bg-transparent data-[state=inactive]:bg-transparent"
                                     >
                                         Structures
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="interiors"
-                                        className="rounded-full px-6 py-2.5 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 transition-all"
+                                        className="rounded-full px-4 py-2 text-xs sm:text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 hover:text-white transition-all bg-transparent data-[state=inactive]:bg-transparent"
                                     >
                                         Interiors
                                     </TabsTrigger>
                                     <TabsTrigger
                                         value="models"
-                                        className="rounded-full px-6 py-2.5 text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 transition-all"
+                                        className="rounded-full px-4 py-2 text-xs sm:text-sm font-medium data-[state=active]:bg-primary data-[state=active]:text-white text-neutral-400 hover:text-white transition-all bg-transparent data-[state=inactive]:bg-transparent"
                                     >
                                         Models
                                     </TabsTrigger>
