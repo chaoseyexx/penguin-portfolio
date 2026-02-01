@@ -472,23 +472,49 @@ export default function Home() {
                     <div className="container relative z-10 space-y-12">
                         <ScrollAnimation animation="fade-in-up" duration="duration-700">
                             <div className="max-w-3xl mx-auto text-center space-y-6">
+                                <h2 className="text-primary font-mono text-sm tracking-widest uppercase flex items-center justify-center">
+                                    <span className="inline-block w-8 h-[1px] bg-primary mr-4"></span>
+                                    COLLABORATIONS
+                                    <span className="inline-block w-8 h-[1px] bg-primary ml-4"></span>
+                                </h2>
                                 <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
-                                    Collaborations
+                                    Groups I've Worked With
                                 </h3>
                             </div>
                         </ScrollAnimation>
 
-                        <ScrollAnimation animation="fade-in-up" duration="duration-700" delay="delay-200">
-                            <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl relative bg-neutral-900/50 aspect-video flex items-center justify-center group hover:border-primary/30 transition-colors duration-500">
-                                <div className="text-center p-8">
-                                    <div className="w-20 h-20 rounded-full bg-neutral-800 flex items-center justify-center mx-auto mb-6">
-                                        <User className="h-10 w-10 text-neutral-400" />
-                                    </div>
-                                    <p className="text-neutral-400 text-lg font-medium">YouTuber Collaboration</p>
-                                    <p className="text-sm text-neutral-600 mt-2">Upload your image to display here</p>
-                                </div>
+                        {settings?.collaborations && settings.collaborations.length > 0 ? (
+                            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+                                {settings.collaborations.map((collab, index) => (
+                                    <ScrollAnimation key={collab.id} animation="fade-in-up" duration="duration-700" delay={`delay-${Math.min(index * 100, 300)}` as any}>
+                                        <div className="flex flex-col items-center gap-4 group">
+                                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-neutral-800 group-hover:border-primary transition-all duration-300 relative shadow-2xl bg-neutral-900">
+                                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                                <img
+                                                    src={collab.image}
+                                                    alt={collab.name}
+                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/100x100?text=?" }}
+                                                />
+                                            </div>
+                                            <p className="text-neutral-400 font-medium text-lg group-hover:text-white transition-colors">{collab.name}</p>
+                                        </div>
+                                    </ScrollAnimation>
+                                ))}
                             </div>
-                        </ScrollAnimation>
+                        ) : (
+                            <ScrollAnimation animation="fade-in-up" duration="duration-700" delay="delay-200">
+                                <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl relative bg-neutral-900/50 aspect-video flex items-center justify-center group hover:border-primary/30 transition-colors duration-500">
+                                    <div className="text-center p-8">
+                                        <div className="w-20 h-20 rounded-full bg-neutral-800 flex items-center justify-center mx-auto mb-6">
+                                            <User className="h-10 w-10 text-neutral-400" />
+                                        </div>
+                                        <p className="text-neutral-400 text-lg font-medium">YouTuber Collaboration</p>
+                                        <p className="text-sm text-neutral-600 mt-2">Add collaborations in the Admin Panel</p>
+                                    </div>
+                                </div>
+                            </ScrollAnimation>
+                        )}
                     </div>
                 </section>
 
