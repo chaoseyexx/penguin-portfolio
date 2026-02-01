@@ -1,0 +1,1 @@
+This is a placeholder for your CP. Please replace this file (public/cv.txt) with your actual CV file (e.g., cv.pdf) and update the link in src/app/page.tsx.

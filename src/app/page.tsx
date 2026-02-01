@@ -354,13 +354,15 @@ export default function Home() {
                                         <Button size="lg" className="h-14 px-8 text-base font-semibold tracking-wide" onClick={(e) => scrollToSection("portfolio", e)}>
                                             View Work <ArrowRight className="ml-2 h-5 w-5" />
                                         </Button>
-                                        <Button
-                                            size="lg"
-                                            variant="outline"
-                                            className="h-14 px-8 text-base font-semibold tracking-wide bg-transparent border-neutral-800 hover:bg-white/5"
-                                        >
-                                            <Download className="mr-2 h-5 w-5" /> Download CV
-                                        </Button>
+                                        <a href="/cv.txt" download="cv.txt">
+                                            <Button
+                                                size="lg"
+                                                variant="outline"
+                                                className="h-14 px-8 text-base font-semibold tracking-wide bg-transparent border-neutral-800 hover:bg-white/5"
+                                            >
+                                                <Download className="mr-2 h-5 w-5" /> Download CV
+                                            </Button>
+                                        </a>
                                     </div>
                                 </div>
                             </ScrollAnimation>
@@ -479,7 +481,7 @@ export default function Home() {
                                     <span className="inline-block w-8 h-[1px] bg-primary ml-4"></span>
                                 </h2>
                                 <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
-                                    Groups I've Worked With
+                                    People And Groups That I've Worked With
                                 </h3>
                             </div>
                         </ScrollAnimation>
