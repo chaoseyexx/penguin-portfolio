@@ -26,7 +26,8 @@ import {
     Box,
     Layout,
     Smartphone,
-    Lock
+    Lock,
+    User
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -462,6 +463,32 @@ export default function Home() {
                                 </TabsContent>
                             ))}
                         </Tabs>
+                    </div>
+                </section>
+
+                {/* Collaborations Section */}
+                <section className="py-16 md:py-24 relative overflow-hidden">
+                    <div className="absolute inset-0 z-0 bg-neutral-950/50"></div>
+                    <div className="container relative z-10 space-y-12">
+                        <ScrollAnimation animation="fade-in-up" duration="duration-700">
+                            <div className="max-w-3xl mx-auto text-center space-y-6">
+                                <h3 className="text-3xl sm:text-5xl md:text-6xl font-bold tracking-tighter text-white font-heading">
+                                    Collaborations
+                                </h3>
+                            </div>
+                        </ScrollAnimation>
+
+                        <ScrollAnimation animation="fade-in-up" duration="duration-700" delay="delay-200">
+                            <div className="max-w-4xl mx-auto rounded-3xl overflow-hidden border border-neutral-800 shadow-2xl relative bg-neutral-900/50 aspect-video flex items-center justify-center group hover:border-primary/30 transition-colors duration-500">
+                                <div className="text-center p-8">
+                                    <div className="w-20 h-20 rounded-full bg-neutral-800 flex items-center justify-center mx-auto mb-6">
+                                        <User className="h-10 w-10 text-neutral-400" />
+                                    </div>
+                                    <p className="text-neutral-400 text-lg font-medium">YouTuber Collaboration</p>
+                                    <p className="text-sm text-neutral-600 mt-2">Upload your image to display here</p>
+                                </div>
+                            </div>
+                        </ScrollAnimation>
                     </div>
                 </section>
 
