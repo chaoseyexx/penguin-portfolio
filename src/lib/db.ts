@@ -13,7 +13,7 @@ export interface Settings {
     hero: { subtitle: string; title: string; description: string; featuredImage: string; featuredTitle: string; featuredDescription: string }
     about: { name: string; age: string; experience: string; profileImage: string; bio: string[]; whyHireMe: string[] }
     contact: { email: string; robloxUsername: string; discordUsername: string; discordLink: string; availability: string }
-    collaborations: { id: string; name: string; image: string }[]
+    collaborations: { id: string; name: string; image: string; creator: string; role: string; memberCount: string }[]
 }
 
 // Defaults

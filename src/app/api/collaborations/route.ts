@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     try {
         const body = await req.json()
         const settings = await getSettings()
-        const { id, name, image } = body
+        const { id, name, image, creator, role, memberCount } = body
 
         if (!name || !image) {
             return NextResponse.json({ error: "Name and image are required" }, { status: 400 })
@@ -24,7 +24,10 @@ export async function POST(req: Request) {
         const newCollab = {
             id: id || randomUUID(),
             name,
-            image
+            image,
+            creator: creator || "",
+            role: role || "",
+            memberCount: memberCount || ""
         }
 
         const updatedCollaborations = id

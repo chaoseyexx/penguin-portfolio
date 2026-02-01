@@ -11,7 +11,7 @@ import { DndContext, closestCenter, PointerSensor, useSensor, useSensors, DragEn
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable"
 import { CSS } from "@dnd-kit/utilities"
 
-interface Collaboration { id: string; name: string; image: string }
+interface Collaboration { id: string; name: string; image: string; creator: string; role: string; memberCount: string }
 
 function SortableCollaboration({ collab, onEdit, onDelete }: { collab: Collaboration; onEdit: () => void; onDelete: () => void }) {
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: collab.id })
@@ -36,7 +36,13 @@ function SortableCollaboration({ collab, onEdit, onDelete }: { collab: Collabora
                                 <Button size="sm" variant="ghost" onClick={onDelete} className="h-6 w-6 p-0 text-neutral-400 hover:text-red-400"><Trash2 className="h-3 w-3" /></Button>
                             </div>
                         </div>
-                        <p className="text-[10px] text-neutral-400 truncate mt-0.5">{collab.image}</p>
+                        <div className="flex flex-col gap-0.5 mt-0.5">
+                            <p className="text-[10px] text-neutral-400 truncate">By {collab.creator || "Unknown"}</p>
+                            <div className="flex gap-2">
+                                <span className="text-[10px] text-neutral-500">{collab.memberCount || "0"} Members</span>
+                                <span className="text-[10px] text-neutral-500">{collab.role || "Member"} Rank</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </CardContent>
@@ -52,7 +58,7 @@ export default function CollaborationsPage() {
     const [editingCollab, setEditingCollab] = useState<Collaboration | null>(null)
     const [deletingCollab, setDeletingCollab] = useState<Collaboration | null>(null)
     const [saving, setSaving] = useState(false)
-    const [formData, setFormData] = useState({ name: "", image: "" })
+    const [formData, setFormData] = useState({ name: "", image: "", creator: "", role: "", memberCount: "" })
 
     const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
 
@@ -74,24 +80,12 @@ export default function CollaborationsPage() {
         const newCollaborations = arrayMove(collaborations, oldIndex, newIndex)
         setCollaborations(newCollaborations)
         try {
-            // We need to update the whole settings object or create a specialized endpoint for reordering if needed.
-            // For now, let's just save each one in order which might be inefficient but works if we post the whole array.
-            // But the API I made expects single item save or single item delete.
-            // I should update the API to handle reorder or just save the reordered array.
-            // Wait, my POST implementation adds or updates ONE item.
-            // I need to update the API to support saving the whole array OR implement reordering there.
-            // Actually, the simplest way is to update 'settings.collaborations' directly in an endpoint.
-            // Let's modify the API to accept a list update or handle reordering.
-            // Or I can just trigger a saveSettings with the whole new array.
-            // My current API GET returns the array.
-            // My POST updates/adds ONE item.
-            // I'll need a PUT endpoint to update the whole list.
             await fetch("/api/collaborations", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items: newCollaborations }) })
         } catch (e) { console.error(e) }
     }
 
-    const handleAdd = () => { setEditingCollab(null); setFormData({ name: "", image: "" }); setIsFormOpen(true) }
-    const handleEdit = (c: Collaboration) => { setEditingCollab(c); setFormData({ name: c.name, image: c.image }); setIsFormOpen(true) }
+    const handleAdd = () => { setEditingCollab(null); setFormData({ name: "", image: "", creator: "", role: "", memberCount: "" }); setIsFormOpen(true) }
+    const handleEdit = (c: Collaboration) => { setEditingCollab(c); setFormData({ name: c.name, image: c.image, creator: c.creator, role: c.role, memberCount: c.memberCount }); setIsFormOpen(true) }
     const handleDelete = (c: Collaboration) => { setDeletingCollab(c); setIsDeleteOpen(true) }
 
     const handleSave = async () => {
@@ -142,8 +136,13 @@ export default function CollaborationsPage() {
                         <DialogDescription className="text-neutral-400 text-sm">Add a group or YouTuber you've collaborated with.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-3 py-2">
-                        <div><label className="text-[10px] text-neutral-400 block mb-1">Name</label><Input value={formData.name} onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="e.g. ChaosLabs" /></div>
-                        <div><label className="text-[10px] text-neutral-400 block mb-1">Image URL</label><Input value={formData.image} onChange={(e) => setFormData(p => ({ ...p, image: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="https://..." /></div>
+                        <div className="grid grid-cols-2 gap-3">
+                            <div className="col-span-2"><label className="text-[10px] text-neutral-400 block mb-1">Group Name</label><Input value={formData.name} onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="e.g. Combat Assault Team" /></div>
+                            <div className="col-span-2"><label className="text-[10px] text-neutral-400 block mb-1">Image URL</label><Input value={formData.image} onChange={(e) => setFormData(p => ({ ...p, image: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="https://..." /></div>
+                            <div><label className="text-[10px] text-neutral-400 block mb-1">Creator</label><Input value={formData.creator} onChange={(e) => setFormData(p => ({ ...p, creator: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="e.g. Joshuaholic" /></div>
+                            <div><label className="text-[10px] text-neutral-400 block mb-1">Member Count</label><Input value={formData.memberCount} onChange={(e) => setFormData(p => ({ ...p, memberCount: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="e.g. 26K+" /></div>
+                            <div className="col-span-2"><label className="text-[10px] text-neutral-400 block mb-1">My Rank/Role</label><Input value={formData.role} onChange={(e) => setFormData(p => ({ ...p, role: e.target.value }))} className="bg-neutral-800 border-neutral-700 h-8 text-sm" placeholder="e.g. Recruit" /></div>
+                        </div>
                     </div>
                     <DialogFooter>
                         <Button size="sm" variant="outline" onClick={() => setIsFormOpen(false)} className="border-neutral-700">Cancel</Button>

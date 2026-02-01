@@ -27,7 +27,8 @@ import {
     Layout,
     Smartphone,
     Lock,
-    User
+    User,
+    MoreHorizontal
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -484,20 +485,42 @@ export default function Home() {
                         </ScrollAnimation>
 
                         {settings?.collaborations && settings.collaborations.length > 0 ? (
-                            <div className="flex flex-wrap justify-center gap-8 md:gap-12">
+                            <div className="flex flex-col gap-4 max-w-4xl mx-auto">
                                 {settings.collaborations.map((collab, index) => (
                                     <ScrollAnimation key={collab.id} animation="fade-in-up" duration="duration-700" delay={`delay-${Math.min(index * 100, 300)}` as any}>
-                                        <div className="flex flex-col items-center gap-4 group">
-                                            <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-neutral-800 group-hover:border-primary transition-all duration-300 relative shadow-2xl bg-neutral-900">
+                                        <div className="group relative bg-neutral-900 border border-neutral-800 rounded-xl p-4 md:p-6 flex items-center gap-4 md:gap-6 hover:border-neutral-700 hover:bg-neutral-900/80 transition-all duration-300">
+                                            {/* Image */}
+                                            <div className="w-20 h-20 md:w-24 md:h-24 shrink-0 rounded-lg overflow-hidden bg-neutral-950 border border-neutral-800 shadow-lg">
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img
                                                     src={collab.image}
                                                     alt={collab.name}
-                                                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                                    className="w-full h-full object-cover"
                                                     onError={(e) => { (e.target as HTMLImageElement).src = "https://placehold.co/100x100?text=?" }}
                                                 />
                                             </div>
-                                            <p className="text-neutral-400 font-medium text-lg group-hover:text-white transition-colors">{collab.name}</p>
+
+                                            {/* Content */}
+                                            <div className="flex-1 min-w-0">
+                                                <div className="flex items-start justify-between">
+                                                    <div>
+                                                        <h3 className="text-xl md:text-2xl font-bold text-white flex items-center gap-2 font-heading tracking-tight">
+                                                            {collab.name}
+                                                        </h3>
+                                                        <p className="text-sm text-neutral-400 mt-1">By <span className="text-neutral-300">{(collab as any).creator || "Unknown"}</span></p>
+                                                    </div>
+                                                    <MoreHorizontal className="text-neutral-600 h-5 w-5 shrink-0" />
+                                                </div>
+
+                                                <div className="flex items-center gap-6 mt-4">
+                                                    <div className="flex items-center gap-2 text-xs md:text-sm font-medium text-neutral-500">
+                                                        <span className="text-white">{(collab as any).memberCount || "0"}</span> Members
+                                                    </div>
+                                                    <div className="flex items-center gap-2 text-xs md:text-sm font-medium text-neutral-500">
+                                                        <span className="text-white">{(collab as any).role || "Member"}</span> Rank
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </ScrollAnimation>
                                 ))}
