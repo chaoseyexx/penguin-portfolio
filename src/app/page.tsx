@@ -354,7 +354,7 @@ export default function Home() {
                                         <Button size="lg" className="h-14 px-8 text-base font-semibold tracking-wide" onClick={(e) => scrollToSection("portfolio", e)}>
                                             View Work <ArrowRight className="ml-2 h-5 w-5" />
                                         </Button>
-                                        <a href="/cv.txt" download="cv.txt">
+                                        <a href="/Dante_Olmeo_CV.png" download="Dante_Olmeo_CV.png">
                                             <Button
                                                 size="lg"
                                                 variant="outline"
